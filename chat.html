@@ -4,52 +4,58 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>AI Chat • Açık Zeka Hub</title>
-
-  <!-- Ana stil dosyan -->
   <link rel="stylesheet" href="style.css" />
+  <style>
+    .settings-btn{position:fixed;bottom:16px;right:16px;background:#1abc9c;color:#fff;
+      border:none;border-radius:50%;width:48px;height:48px;font-size:22px;cursor:pointer;
+      box-shadow:0 2px 6px rgba(0,0,0,.2)}
+    .settings-panel{position:fixed;bottom:80px;right:16px;background:#fff;padding:14px 18px;
+      border-radius:12px;box-shadow:0 2px 10px rgba(0,0,0,.15);display:none;z-index:20}
+    .settings-panel label{font-size:.85rem;display:block;margin-top:8px}
+    .settings-panel input{width:100%;padding:6px 8px;margin-top:4px;border:1px solid #ccc;
+      border-radius:6px;font-size:.9rem}
+  </style>
 </head>
 <body>
-  <!-- ░░░ ÜST BAR ░░░ -->
   <header class="nav">
     <h1 class="logo">🤖 Metin Sohbet</h1>
   </header>
 
-  <!-- ░░░ SOHBET ALANI ░░░ -->
   <main style="padding:16px">
     <div id="chatBox" class="chat-box">
-      <div class="message bot">
-        Merhaba! Size nasıl yardımcı olabilirim?
-      </div>
+      <div class="message bot">Merhaba! Size nasıl yardımcı olabilirim?</div>
     </div>
 
-    <!-- Mesaj girişi -->
     <form class="input-area" onsubmit="sendMessage();return false;">
-      <input
-        id="userInput"
-        type="text"
-        placeholder="Bir şey yaz..."
-        autocomplete="off"
-      />
+      <input id="userInput" placeholder="Bir şey yaz..." autocomplete="off" />
       <button type="submit">Gönder</button>
     </form>
-
-    <!-- İsteğe bağlı: token sıfırlama -->
-    <p style="text-align:center;font-size:.8rem;margin-top:10px">
-      <a
-        href="#"
-        onclick="localStorage.removeItem('hf_token');alert('Token sıfırlandı! Sayfayı yenile.');return false;"
-      >
-        Tokenı sıfırla
-      </a>
-    </p>
   </main>
 
-  <!-- ░░░ FOOTER ░░░ -->
+  <!-- ⚙️ Ayar paneli -->
+  <button class="settings-btn" onclick="toggleSettings()">⚙️</button>
+
+  <div id="settingsPanel" class="settings-panel">
+    <label>Max Tokens
+      <input type="number" id="maxTokInp" min="1" max="512" />
+    </label>
+    <label>Temperature
+      <input type="number" id="tempInp" step="0.1" min="0" max="1" />
+    </label>
+    <label>Top-p
+      <input type="number" id="topPInp" step="0.05" min="0" max="1" />
+    </label>
+    <label>Repetition Penalty
+      <input type="number" id="repInp" step="0.1" min="1" max="2" />
+    </label>
+    <button style="margin-top:10px;width:100%;background:#1abc9c;color:#fff;border:none;
+      padding:8px;border-radius:8px" onclick="saveSettings()">Kaydet</button>
+  </div>
+
   <footer class="footer">
     <p><a href="index.html">← Ana Sayfa</a></p>
   </footer>
 
-  <!-- JS -->
   <script src="script.js"></script>
 </body>
 </html>
