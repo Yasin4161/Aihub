@@ -1,19 +1,63 @@
-<main>
-  <section class="tool-card">
-    <h2>🧠 Metin Sohbet</h2>
-    <p>GPT tarzı sohbet için.</p>
-    <button onclick="window.location.href='chat.html'">Giriş</button>
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Açık Zeka Hub</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+  <!-- Stil dosyan -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- ░░░ ÜST BAR ░░░ -->
+  <header class="nav">
+    <h1 class="logo">Açık Zeka Hub</h1>
+  </header>
+
+  <!-- ░░░ HERO ░░░ -->
+  <section class="hero">
+    <h2>Bedava Açık Kaynak AI'ları Tek Çatı Altında</h2>
+    <p>Metin sohbetten görsel üretime, PDF özetleyiciden sesli okuma’ya kadar hepsi mobilde parmaklarınızın ucunda.</p>
+    <a href="#tools" class="cta-btn">Hemen Keşfet</a>
   </section>
 
-  <section class="tool-card">
-    <h2>🎨 Görsel Oluşturucu</h2>
-    <p>Prompt ile AI görsel üret.</p>
-    <button onclick="window.location.href='imagegen.html'">Giriş</button>
-  </section>
+  <!-- ░░░ ARAÇLAR ░░░ -->
+  <main id="tools" class="tool-grid">
+    <!-- AI Kartları -->
+    <article class="tool-card" onclick="location.href='chat.html'">
+      <span class="tool-icon">🧠</span>
+      <h3>Metin Sohbet</h3>
+      <p>GPT-tarzı soru & cevap.</p>
+    </article>
 
-  <section class="tool-card">
-    <h2>📄 PDF Özetleyici</h2>
-    <p>PDF dosyasından içerik çıkar.</p>
-    <button onclick="window.location.href='pdf.html'">Giriş</button>
-  </section>
-</main>
+    <article class="tool-card" onclick="location.href='imagegen.html'">
+      <span class="tool-icon">🎨</span>
+      <h3>Görsel Üretici</h3>
+      <p>Prompt ile anında görsel.</p>
+    </article>
+
+    <article class="tool-card" onclick="location.href='pdf.html'">
+      <span class="tool-icon">📄</span>
+      <h3>PDF Özetleyici</h3>
+      <p>Dosyanın özünü çıkar.</p>
+    </article>
+
+    <!-- İleride yeni araç eklemek kolay -->
+    <article class="tool-card" onclick="location.href='tts.html'">
+      <span class="tool-icon">🔊</span>
+      <h3>Sesli Okuyucu</h3>
+      <p>Metni Türkçe seslendir.</p>
+    </article>
+  </main>
+
+  <!-- ░░░ FOOTER ░░░ -->
+  <footer class="footer">
+    <p>© 2025 Açık Zeka Hub • <a href="https://github.com/Yasin4161">GitHub</a></p>
+  </footer>
+</body>
+</html>
