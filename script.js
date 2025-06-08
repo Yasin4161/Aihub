@@ -1,76 +1,65 @@
-/* -------------------------------------------
-   Açık Zeka Hub • AI Chat
-   Model: HuggingFaceH4/zephyr-7b-beta
---------------------------------------------*/
-
-/* 🔧 Model API adresi */
 const MODEL_URL = "https://api-inference.huggingface.co/models/HuggingFaceH4/zephyr-7b-beta";
 
-/* ========== Token Yöneticisi ========== */
+/* ========== TOKEN AL ========== */
 async function getToken() {
   let token = localStorage.getItem("hf_token");
   if (!token) {
-    token = prompt("Hugging Face API tokenini gir (sadece bir kez kaydedilecek):");
-    if (token) {
-      localStorage.setItem("hf_token", token.trim());
-    } else {
-      throw new Error("Token girilmedi.");
-    }
+    token = prompt("Hugging Face tokenini gir:");
+    if (token) localStorage.setItem("hf_token", token.trim());
+    else throw new Error("Token girilmedi.");
   }
   return token;
 }
 
-/* ========== Sohbet Gönderimi ========== */
+/* ========== MESAJ GÖNDER ========== */
 async function sendMessage() {
-  const inputEl = document.getElementById("userInput");
+  const input = document.getElementById("userInput").value.trim();
   const chatBox = document.getElementById("chatBox");
-  const promptText = inputEl.value.trim();
-  if (!promptText) return;
+  if (!input) return;
 
-  // Kullanıcı mesajını göster
-  chatBox.innerHTML += `<div class="message user">${escapeHtml(promptText)}</div>`;
+  chatBox.innerHTML += `<div class="message user">${escapeHtml(input)}</div>`;
   scrollBottom(chatBox);
-  inputEl.value = "";
+  document.getElementById("userInput").value = "";
 
-  // Geçici "yazıyor" balonu
   const waitId = `wait${Date.now()}`;
   chatBox.innerHTML += `<div id="${waitId}" class="message bot">⏳ Yazıyor...</div>`;
   scrollBottom(chatBox);
 
   try {
-    const HF_TOKEN = await getToken();
+    const token = await getToken();
 
-    // Prompt'u chat formatında oluştur
-    const formattedPrompt = `### User:\n${promptText}\n\n### Assistant:`;
+    // Zephyr formatı: <|system|>\n...\n<|user|>\n...\n<|assistant|>\n
+    const fullPrompt = `<|system|>\nSen akıllı, yardımsever ve Türkçe konuşan bir asistansın.\n<|user|>\n${input}\n<|assistant|>\n`;
 
-    const res = await fetch(MODEL_URL, {
+    const response = await fetch(MODEL_URL, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${HF_TOKEN}`
+        Authorization: `Bearer ${token}`
       },
       body: JSON.stringify({
-        inputs: formattedPrompt,
+        inputs: fullPrompt,
         max_new_tokens: 128,
-        temperature: 0.7,
+        temperature: 0.7
       })
     });
 
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const data = await res.json();
-    const generated = (data[0]?.generated_text || "")
-      .split("### Assistant:")[1]
-      ?.trim() || "Üzgünüm, yanıt veremedim.";
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    const data = await response.json();
+    const rawText = data[0]?.generated_text || "";
 
-    document.getElementById(waitId).innerHTML = escapeHtml(generated);
+    // Cevabı sadece <|assistant|> sonrası al
+    const answer = rawText.split("<|assistant|>")[1]?.trim() || "Anlayamadım.";
+
+    document.getElementById(waitId).innerHTML = escapeHtml(answer);
   } catch (err) {
-    document.getElementById(waitId).innerHTML = `⚠️ Hata: ${escapeHtml(err.message)}`;
+    document.getElementById(waitId).innerHTML = `⚠️ Hata: ${err.message}`;
   }
 
   scrollBottom(chatBox);
 }
 
-/* ===== Yardımcılar ===== */
+/* ========== Yardımcılar ========== */
 function scrollBottom(el) {
   el.scrollTop = el.scrollHeight;
 }
