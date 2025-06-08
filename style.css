@@ -1,16 +1,71 @@
-textarea {
-  width: 100%;
-  padding: 10px;
-  margin-top: 15px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-  font-size: 16px;
+/* === DEĞİŞTİR: Tüm dosyayı bununla güncelle === */
+:root{
+  --primary:#1abc9c;
+  --dark:#2c3e50;
+  --light:#ecf0f1;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:'Poppins',sans-serif;
+  background:var(--light);
+  color:var(--dark);
+  line-height:1.5;
 }
 
-#outputArea {
-  margin-top: 20px;
-  background-color: #fff;
-  padding: 15px;
-  border-radius: 10px;
-  box-shadow: 0 0 5px rgba(0,0,0,0.1);
+/* ---- Navigasyon ---- */
+.nav{
+  background:var(--primary);
+  padding:16px;
+  text-align:center;
+  color:#fff;
+  box-shadow:0 2px 6px rgba(0,0,0,.1);
 }
+.logo{font-size:1.5rem;font-weight:600;}
+
+/* ---- Hero ---- */
+.hero{
+  text-align:center;
+  padding:60px 20px 40px;
+  background:#fff;
+}
+.hero h2{font-size:1.8rem;margin-bottom:10px;}
+.hero p{max-width:520px;margin:0 auto 20px;}
+.cta-btn{
+  display:inline-block;
+  background:var(--primary);
+  color:#fff;
+  padding:12px 26px;
+  border-radius:30px;
+  font-weight:600;
+  text-decoration:none;
+}
+
+/* ---- Araç Kartları ---- */
+.tool-grid{
+  display:grid;
+  gap:16px;
+  padding:24px;
+  grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+}
+.tool-card{
+  background:#fff;
+  padding:20px 16px;
+  border-radius:12px;
+  box-shadow:0 2px 8px rgba(0,0,0,.06);
+  text-align:center;
+  cursor:pointer;
+  transition:.2s transform;
+}
+.tool-card:hover{transform:translateY(-4px);}
+.tool-icon{font-size:2rem;display:block;margin-bottom:8px;}
+.tool-card h3{font-size:1.1rem;margin-bottom:4px;}
+.tool-card p{font-size:.9rem;color:#555;}
+
+/* ---- Footer ---- */
+.footer{
+  text-align:center;
+  padding:20px 0 40px;
+  font-size:.85rem;
+  color:#555;
+}
+.footer a{color:var(--primary);text-decoration:none;}
