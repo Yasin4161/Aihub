@@ -1,10 +1,24 @@
-const MODEL_URL = "https://api-inference.huggingface.co/models/HuggingFaceH4/zephyr-7b-beta";
+/* --------------------------------------------------
+   Açık Zeka Hub • AI Chat
+   Model  : HuggingFaceH4/zephyr-7b-beta
+   Amaç   : Kısa ve düzgün Türkçe cevap
+-------------------------------------------------- */
 
-/* ========== TOKEN AL ========== */
+/* 🔗 Model API adresi */
+const MODEL_URL =
+  "https://api-inference.huggingface.co/models/HuggingFaceH4/zephyr-7b-beta";
+
+/* 📜 Sistem mesajı */
+const SYSTEM =
+  "Sen Türkçe konuşan, kısa ve net cevaplar veren kibar bir yapay zekâ " +
+  "asistansın. Gereksiz ayrıntılardan kaçın, imla hatası yapma ve cevabın " +
+  "iki-üç cümleyi geçmesin.";
+
+/* ========== TOKEN YÖNETİMİ ========== */
 async function getToken() {
   let token = localStorage.getItem("hf_token");
   if (!token) {
-    token = prompt("Hugging Face tokenini gir:");
+    token = prompt("Hugging Face API tokenini gir (tarayıcında saklanacak):");
     if (token) localStorage.setItem("hf_token", token.trim());
     else throw new Error("Token girilmedi.");
   }
@@ -13,14 +27,17 @@ async function getToken() {
 
 /* ========== MESAJ GÖNDER ========== */
 async function sendMessage() {
-  const input = document.getElementById("userInput").value.trim();
-  const chatBox = document.getElementById("chatBox");
-  if (!input) return;
+  const inputEl  = document.getElementById("userInput");
+  const chatBox  = document.getElementById("chatBox");
+  const userText = inputEl.value.trim();
+  if (!userText) return;
 
-  chatBox.innerHTML += `<div class="message user">${escapeHtml(input)}</div>`;
+  /* Kullanıcı mesajını ekranda göster */
+  chatBox.innerHTML += `<div class="message user">${escapeHtml(userText)}</div>`;
   scrollBottom(chatBox);
-  document.getElementById("userInput").value = "";
+  inputEl.value = "";
 
+  /* Geçici “yazıyor” balonu */
   const waitId = `wait${Date.now()}`;
   chatBox.innerHTML += `<div id="${waitId}" class="message bot">⏳ Yazıyor...</div>`;
   scrollBottom(chatBox);
@@ -28,38 +45,44 @@ async function sendMessage() {
   try {
     const token = await getToken();
 
-    // Zephyr formatı: <|system|>\n...\n<|user|>\n...\n<|assistant|>\n
-    const fullPrompt = `<|system|>\nSen akıllı, yardımsever ve Türkçe konuşan bir asistansın.\n<|user|>\n${input}\n<|assistant|>\n`;
+    /* Zephyr prompt formatı */
+    const prompt =
+      `<|system|>\n${SYSTEM}\n<|user|>\n${userText}\n<|assistant|>\n`;
 
-    const response = await fetch(MODEL_URL, {
+    const res = await fetch(MODEL_URL, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`
       },
       body: JSON.stringify({
-        inputs: fullPrompt,
-        max_new_tokens: 128,
-        temperature: 0.7
+        inputs: prompt,
+        max_new_tokens: 64,
+        temperature: 0.3,
+        top_p: 0.9,
+        repetition_penalty: 1.2,
+        stop: ["<|user|>"]
       })
     });
 
-    if (!response.ok) throw new Error(`HTTP ${response.status}`);
-    const data = await response.json();
-    const rawText = data[0]?.generated_text || "";
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data     = await res.json();
+    const rawText  = data[0]?.generated_text || "";
 
-    // Cevabı sadece <|assistant|> sonrası al
-    const answer = rawText.split("<|assistant|>")[1]?.trim() || "Anlayamadım.";
+    /* Yanıtı <|assistant|> … <|user|> arasında al */
+    let answer = rawText.split("<|assistant|>")[1] || "";
+    answer     = answer.split("<|user|>")[0]?.trim() || "Üzgünüm, yanıt veremedim.";
 
     document.getElementById(waitId).innerHTML = escapeHtml(answer);
   } catch (err) {
-    document.getElementById(waitId).innerHTML = `⚠️ Hata: ${err.message}`;
+    document.getElementById(waitId).innerHTML =
+      `⚠️ Hata: ${escapeHtml(err.message)}`;
   }
 
   scrollBottom(chatBox);
 }
 
-/* ========== Yardımcılar ========== */
+/* ========== YARDIMCILAR ========== */
 function scrollBottom(el) {
   el.scrollTop = el.scrollHeight;
 }
@@ -74,4 +97,4 @@ function escapeHtml(str) {
       "'": "&#039;"
     }[m])
   );
-}
+      }
