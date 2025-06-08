@@ -1,1 +1,36 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GPT-J Metin Üretici</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>🧠 GPT-J Prompt Sayfası</h1>
+  </header>
 
+  <main>
+    <textarea id="promptInput" placeholder="Bir şeyler yaz..." rows="6"></textarea>
+    <button onclick="generateText()">Gönder</button>
+
+    <div id="outputArea"></div>
+  </main>
+
+  <script>
+    function generateText() {
+      const prompt = document.getElementById("promptInput").value;
+      const output = document.getElementById("outputArea");
+
+      if (!prompt.trim()) {
+        output.innerHTML = "<p>Lütfen bir şey yaz.</p>";
+        return;
+      }
+
+      // Şu anda sadece örnek sonuç veriyor
+      output.innerHTML = "<p><b>AI Cevabı:</b> '" + prompt + "' için yapay zekadan örnek yanıt geliyor...</p>";
+    }
+  </script>
+</body>
+</html>
