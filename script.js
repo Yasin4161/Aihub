@@ -51,9 +51,8 @@ async function sendMessage() {
       },
       body: JSON.stringify({
         inputs: formattedPrompt,
-        max_new_tokens: 200,
+        max_new_tokens: 128,
         temperature: 0.7,
-        stop: ["### User:"]
       })
     });
 
