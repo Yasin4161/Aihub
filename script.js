@@ -3,7 +3,7 @@
    Token tarayıcıya bir kez girilir, LocalStorage’da saklanır
 --------------------------------------------*/
 
-const MODEL_URL = "https://api-inference.huggingface.co/models/mistralai/Mistral-7B-Instruct-v0.2";/* 🔧 Hugging Face model endpoint’i */
+const MODEL_URL = "https://api-inference.huggingface.co/models/mistralai/Mistral-7B-Instruct-v0.3";/* 🔧 Hugging Face model endpoint’i */
 
 /* ========== Token yöneticisi ========== */
 async function getToken() {
