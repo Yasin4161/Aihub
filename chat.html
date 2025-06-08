@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Chat • Açık Zeka Hub</title>
+
+  <!-- Ana stil dosyan -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- ░░░ ÜST BAR ░░░ -->
+  <header class="nav">
+    <h1 class="logo">🤖 Metin Sohbet</h1>
+  </header>
+
+  <!-- ░░░ SOHBET ALANI ░░░ -->
+  <main style="padding:16px">
+    <div id="chatBox" class="chat-box">
+      <div class="message bot">
+        Merhaba! Size nasıl yardımcı olabilirim?
+      </div>
+    </div>
+
+    <!-- Mesaj girişi -->
+    <form class="input-area" onsubmit="sendMessage();return false;">
+      <input
+        id="userInput"
+        type="text"
+        placeholder="Bir şey yaz..."
+        autocomplete="off"
+      />
+      <button type="submit">Gönder</button>
+    </form>
+
+    <!-- İsteğe bağlı: token sıfırlama -->
+    <p style="text-align:center;font-size:.8rem;margin-top:10px">
+      <a
+        href="#"
+        onclick="localStorage.removeItem('hf_token');alert('Token sıfırlandı! Sayfayı yenile.');return false;"
+      >
+        Tokenı sıfırla
+      </a>
+    </p>
+  </main>
+
+  <!-- ░░░ FOOTER ░░░ -->
+  <footer class="footer">
+    <p><a href="index.html">← Ana Sayfa</a></p>
+  </footer>
+
+  <!-- JS -->
+  <script src="script.js"></script>
+</body>
+</html>
